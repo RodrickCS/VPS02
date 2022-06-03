@@ -131,6 +131,7 @@ public class OrcamentoForm extends JFrame implements ActionListener {
 		if (tableModel.getRowCount() > 0) {
 			for (int i = 0; i < totLinhas; i++) {
 				tableModel.removeRow(0);
+				OrcamentoProcess.compararProdutos();
 			}
 		}
 		for (Orcamento c : OrcamentoProcess.orc) {
@@ -177,10 +178,12 @@ public class OrcamentoForm extends JFrame implements ActionListener {
 			limparCampos();
 
 		} else {
-			JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+			
 		}
 
 	}
+	
+	
 
 	private void excluir() {
 
@@ -197,7 +200,7 @@ public class OrcamentoForm extends JFrame implements ActionListener {
 
 	private void buscar() {
 
-		String entrada = JOptionPane.showInputDialog(this, "Digite o Id do serviço:");
+		String entrada = JOptionPane.showInputDialog(this, "Digite o Id do produto:");
 
 		boolean isNumeric = true;
 		if (entrada != null) {
@@ -221,7 +224,7 @@ public class OrcamentoForm extends JFrame implements ActionListener {
 				OrcamentoProcess.salvar();
 
 			} else {
-				JOptionPane.showMessageDialog(this, "Serviço não encontrado");
+				JOptionPane.showMessageDialog(this, "Produto não encontrado");
 			}
 		}
 

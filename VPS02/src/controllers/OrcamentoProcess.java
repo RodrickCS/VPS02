@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
+
 import models.Orcamento;
 import modelsdao.OrcamentoDAO;
 
@@ -18,13 +19,17 @@ public class OrcamentoProcess {
 		od.escrever(orc);
 	}
 
-	public boolean compararProdutos() {
+	public static boolean compararProdutos() {
 		boolean maisBarato = false;
 		for (int i = 0; i < OrcamentoProcess.orc.size(); i++) {
-			if (maisBarato == false) {
-				
-			}else {
-				
+			for (Orcamento o : OrcamentoProcess.orc) {
+				if (maisBarato) {
+					if (o.getPreco() < o.getPreco()) {
+						o.setMaisBarato(maisBarato);
+					}
+				} else {
+					maisBarato = true;
+				}
 			}
 		}
 
