@@ -1,12 +1,14 @@
 package viewers;
 
 import java.awt.Color;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+
 
 import javax.swing.table.DefaultTableModel;
 
@@ -15,7 +17,7 @@ import models.Orcamento;
 
 import javax.swing.*;
 
-public class OrcamentoForm extends JFrame implements ActionListener {
+public class OrcamentoForm extends JFrame implements ActionListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +29,24 @@ public class OrcamentoForm extends JFrame implements ActionListener {
 	private JButton btAlterar, btExcluir, btBuscar, btAdicionar;
 	private int autoId = OrcamentoProcess.orc.size() + 1;
 	private DefaultTableModel tableModel;
-
+//
+//	
+//	
+//	
+//	
+//	
+//	
+//	Não faço idéia de como alterar a cor em uma JTable, mas eu tentei.
+//	Está no preencherTabela e no OrcamentoProcess.
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
 	OrcamentoForm() {
 		setTitle("VPS02");
 		setBounds(100, 100, 800, 600);
@@ -125,143 +144,153 @@ public class OrcamentoForm extends JFrame implements ActionListener {
 		btAlterar.addActionListener(this);
 
 	}
-
-	private void preencherTabela() {
-		int totLinhas = tableModel.getRowCount();
-		if (tableModel.getRowCount() > 0) {
-			for (int i = 0; i < totLinhas; i++) {
-				tableModel.removeRow(0);
-				OrcamentoProcess.compararProdutos();
-			}
-		}
-		for (Orcamento c : OrcamentoProcess.orc) {
-			tableModel.addRow(new String[] { c.getId("s"), c.getFornecedor(), c.getProduto(),
-					String.format(c.getPreco().toString()) });
-		}
-
-	}
-
-	public void limparCampos() {
-		tfFornecedor.setText(null);
-		tfProduto.setText(null);
-		tfPreco.setText(null);
-
-	}
-
-	private void enviar() {
-		if (tfFornecedor.getText().length() != 0 && tfProduto.getText().length() != 0
-				&& tfPreco.getText().length() != 0) {
-
-			OrcamentoProcess.orc.add(new Orcamento(autoId, tfFornecedor.getText(), tfProduto.getText(),
-					Double.parseDouble(tfPreco.getText())));
-			autoId++;
-			preencherTabela();
-			limparCampos();
-
-		} else {
-			JOptionPane.showMessageDialog(this, "Preencha todos os campos");
-		}
-
-	}
-
-	private void alterar() {
-		int id = Integer.parseInt(tfId.getText());
-		Orcamento cadastro = new Orcamento(id);
-		int indice = OrcamentoProcess.orc.indexOf(cadastro);
-		if (tfFornecedor.getText().length() != 0 && tfProduto.getText().length() != 0
-				&& tfPreco.getText().length() != 0) {
-
-			OrcamentoProcess.orc.set(indice, new Orcamento(autoId, tfFornecedor.getText(), tfProduto.getText(),
-					Double.parseDouble(tfPreco.getText())));
-			autoId++;
-			preencherTabela();
-			limparCampos();
-
-		} else {
-			
-		}
-
-	}
-	
 	
 
-	private void excluir() {
+		private void preencherTabela() {
+			int totLinhas = tableModel.getRowCount();
+			if (tableModel.getRowCount() > 0) {
+				for (int i = 0; i < totLinhas; i++) {
+					tableModel.removeRow(0);
 
-		int id = Integer.parseInt(tfId.getText());
-		Orcamento cadastro = new Orcamento(id);
-		int indice = OrcamentoProcess.orc.indexOf(cadastro);
-		OrcamentoProcess.orc.remove(indice);
-		preencherTabela();
-		limparCampos();
-		tfId.setText(String.format("%d", autoId));
-		autoId--;
-
-	}
-
-	private void buscar() {
-
-		String entrada = JOptionPane.showInputDialog(this, "Digite o Id do produto:");
-
-		boolean isNumeric = true;
-		if (entrada != null) {
-			for (int i = 0; i < entrada.length(); i++) {
-				if (!Character.isDigit(entrada.charAt(i))) {
-					isNumeric = false;
 				}
 			}
-		} else {
-			isNumeric = false;
+			int row = tableModel.getRowCount();
+			int column = tableModel.getColumnCount();
+			if (tableModel.getRowCount() > 0) {
+				for (int i = 0; i < row; i++) {
+					if(tableModel.getValueAt(row, column) != null) {
+						OrcamentoProcess.compararProdutos();
+						tableModel.setValueAt(Color.YELLOW, row, column);
+					}
+					
+
+				}
+			}
+			for (Orcamento c : OrcamentoProcess.orc) {
+				tableModel.addRow(new String[] { c.getId("s"), c.getFornecedor(), c.getProduto(),
+						String.format(c.getPreco().toString()) });
+			}
+
 		}
-		if (isNumeric) {
-			int id = Integer.parseInt(entrada);
-			Orcamento cadastro = new Orcamento(id);
-			if (OrcamentoProcess.orc.contains(cadastro)) {
-				int indice = OrcamentoProcess.orc.indexOf(cadastro);
-				tfId.setText(OrcamentoProcess.orc.get(indice).getId("s"));
-				tfFornecedor.setText(OrcamentoProcess.orc.get(indice).getFornecedor());
-				tfProduto.setText(OrcamentoProcess.orc.get(indice).getProduto());
-				tfPreco.setText(OrcamentoProcess.orc.get(indice).getPreco().toString());
-				OrcamentoProcess.salvar();
+
+		public void limparCampos() {
+			tfFornecedor.setText(null);
+			tfProduto.setText(null);
+			tfPreco.setText(null);
+
+		}
+
+		private void enviar() {
+			if (tfFornecedor.getText().length() != 0 && tfProduto.getText().length() != 0
+					&& tfPreco.getText().length() != 0) {
+
+				OrcamentoProcess.orc.add(new Orcamento(autoId, tfFornecedor.getText(), tfProduto.getText(),
+						Double.parseDouble(tfPreco.getText())));
+				autoId++;
+				preencherTabela();
+				limparCampos();
 
 			} else {
-				JOptionPane.showMessageDialog(this, "Produto não encontrado");
+				JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+			}
+
+		}
+
+		private void alterar() {
+			int id = Integer.parseInt(tfId.getText());
+			Orcamento cadastro = new Orcamento(id);
+			int indice = OrcamentoProcess.orc.indexOf(cadastro);
+			if (tfFornecedor.getText().length() != 0 && tfProduto.getText().length() != 0
+					&& tfPreco.getText().length() != 0) {
+
+				OrcamentoProcess.orc.set(indice, new Orcamento(autoId, tfFornecedor.getText(), tfProduto.getText(),
+						Double.parseDouble(tfPreco.getText())));
+				autoId++;
+				preencherTabela();
+				limparCampos();
+
+			} else {
+
+			}
+
+		}
+
+		private void excluir() {
+
+			int id = Integer.parseInt(tfId.getText());
+			Orcamento cadastro = new Orcamento(id);
+			int indice = OrcamentoProcess.orc.indexOf(cadastro);
+			OrcamentoProcess.orc.remove(indice);
+			preencherTabela();
+			limparCampos();
+			tfId.setText(String.format("%d", autoId));
+			autoId--;
+
+		}
+
+		private void buscar() {
+
+			String entrada = JOptionPane.showInputDialog(this, "Digite o Id do produto:");
+
+			boolean isNumeric = true;
+			if (entrada != null) {
+				for (int i = 0; i < entrada.length(); i++) {
+					if (!Character.isDigit(entrada.charAt(i))) {
+						isNumeric = false;
+					}
+				}
+			} else {
+				isNumeric = false;
+			}
+			if (isNumeric) {
+				int id = Integer.parseInt(entrada);
+				Orcamento cadastro = new Orcamento(id);
+				if (OrcamentoProcess.orc.contains(cadastro)) {
+					int indice = OrcamentoProcess.orc.indexOf(cadastro);
+					tfId.setText(OrcamentoProcess.orc.get(indice).getId("s"));
+					tfFornecedor.setText(OrcamentoProcess.orc.get(indice).getFornecedor());
+					tfProduto.setText(OrcamentoProcess.orc.get(indice).getProduto());
+					tfPreco.setText(OrcamentoProcess.orc.get(indice).getPreco().toString());
+					OrcamentoProcess.salvar();
+
+				} else {
+					JOptionPane.showMessageDialog(this, "Produto não encontrado");
+				}
+			}
+
+		}
+
+		public void actionPerformed(ActionEvent e) {
+
+			if (e.getSource() == btAdicionar) {
+				enviar();
+				btBuscar.setEnabled(true);
+			}
+			if (e.getSource() == btExcluir) {
+				excluir();
+				btExcluir.setEnabled(false);
+				btAlterar.setEnabled(false);
+				btAdicionar.setEnabled(true);
+				btBuscar.setEnabled(true);
+			}
+			if (e.getSource() == btBuscar) {
+				buscar();
+				btExcluir.setEnabled(true);
+				btAlterar.setEnabled(true);
+				btAdicionar.setEnabled(false);
+			}
+			if (e.getSource() == btAlterar) {
+				alterar();
+				btExcluir.setEnabled(false);
+				btAlterar.setEnabled(false);
+				btAdicionar.setEnabled(true);
+				btBuscar.setEnabled(true);
 			}
 		}
 
+		public static void main(String[] args) {
+			OrcamentoProcess.abrir();
+			new OrcamentoForm().setVisible(true);
+		}
+
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-		if (e.getSource() == btAdicionar) {
-			enviar();
-			btBuscar.setEnabled(true);
-		}
-		if (e.getSource() == btExcluir) {
-			excluir();
-			btExcluir.setEnabled(false);
-			btAlterar.setEnabled(false);
-			btAdicionar.setEnabled(true);
-			btBuscar.setEnabled(true);
-		}
-		if (e.getSource() == btBuscar) {
-			buscar();
-			btExcluir.setEnabled(true);
-			btAlterar.setEnabled(true);
-			btAdicionar.setEnabled(false);
-		}
-		if (e.getSource() == btAlterar) {
-			alterar();
-			btExcluir.setEnabled(false);
-			btAlterar.setEnabled(false);
-			btAdicionar.setEnabled(true);
-			btBuscar.setEnabled(true);
-		}
-	}
-
-	public static void main(String[] args) {
-		OrcamentoProcess.abrir();
-		new OrcamentoForm().setVisible(true);
-	}
-
-}

@@ -2,12 +2,15 @@ package controllers;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 
 import models.Orcamento;
 import modelsdao.OrcamentoDAO;
 
-public class OrcamentoProcess {
+public class OrcamentoProcess extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static ArrayList<Orcamento> orc = new ArrayList<>();
 	private static OrcamentoDAO od = new OrcamentoDAO();
 
