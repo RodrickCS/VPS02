@@ -12,7 +12,7 @@ public class OrcamentoDAO {
 
 	BufferedWriter bw;
 	BufferedReader br;
-	private String path = "F:\\SENAI\\WorkSpace\\VPS02\\dados\\Planilha.csv";
+	private String path = "C:\\Users\\DESENVOLVIMENTO\\Desktop\\VPS02\\VPS02\\dados\\Planilha.csv";
 	
 	
 	public ArrayList<Orcamento> ler() {

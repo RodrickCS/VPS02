@@ -205,7 +205,6 @@ public class OrcamentoForm extends JFrame implements ActionListener  {
 
 				OrcamentoProcess.orc.set(indice, new Orcamento(autoId, tfFornecedor.getText(), tfProduto.getText(),
 						Double.parseDouble(tfPreco.getText())));
-				autoId++;
 				preencherTabela();
 				limparCampos();
 
